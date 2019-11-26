@@ -59,7 +59,7 @@ if __name__ == '__main__':
                                         ['1', '0'], 'label')
     # # df_user_item = df_user_item.fillna('0')
     df_user_item = df_user_item.withColumn('item_id',\
-                                           functions.concat(functions.lit('lzmp-'), functions.col('object_type'),\
+                                           functions.concat(functions.lit('lzm-'), functions.col('object_type'),\
                                                             functions.lit('-'), functions.col('object_id'))).select(\
         'item_id', 'label', 'rway')
     # #
