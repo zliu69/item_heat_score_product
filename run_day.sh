@@ -2,7 +2,7 @@
 
 
 
-spark-submit item_heat_score_product.py --master yarn --name item_heat_score_feature \
+spark-submit item_heat_score_product.py --master yarn --name item_heat_score_lzm \
 --deploy-mode client \
 --conf spark.yarn.maxAppAttempts=1 \
 --conf spark.app.name=liuzimo\
@@ -12,7 +12,6 @@ spark-submit item_heat_score_product.py --master yarn --name item_heat_score_fea
 --conf spark.executor.cores=4\
 --conf spark.executor.instances=100\
 --conf spark.yarn.executor.memoryOverhead=4096\
---conf spark.yarn.report.interval=60000\
 --conf spark.sql.shuffle.partitions=200\
 --conf spark.rpc.message.maxSize=2046\
 --conf spark.network.timeout=1200s\

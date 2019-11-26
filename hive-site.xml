@@ -120,7 +120,7 @@
 
 <property>
 	<name>hive.jobname.length</name>
-	<value>20</value>
+	<value>10</value>
 </property>
 
 <property>

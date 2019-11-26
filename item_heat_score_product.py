@@ -152,17 +152,17 @@ if __name__ == '__main__':
     #
     # #4  存入hive redis
 
-    pool = redis.ConnectionPool(host="codis.rcmsys2.lq.autohome.com.cn", port="19099")
+    pool = redis.ConnectionPool(host="10.25.248.35", port="6379", db=4)
     conn = redis.Redis(connection_pool=pool, decode_responses=True)
     dict_heat_score = df_user_item_temp_count.rdd.collectAsMap()
 
     cnt = 0
     total_num = len(dict_heat_score)
-    batch_size = total_num // 1000
+    batch_size = total_num // 2000
 
     with conn.pipeline(transaction=False) as p:
         for key in dict_heat_score:
-            p.set(key, dict_heat_score[key], 36000)  # 6000代表6000秒，可以自己设置
+            p.set(key, dict_heat_score[key], 90000)  # 6000代表6000秒，可以自己设置
             cnt = cnt + 1
             if cnt == total_num or cnt % batch_size == 0:
                 p.execute()
