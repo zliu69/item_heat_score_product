@@ -59,7 +59,7 @@ if __name__ == '__main__':
                                         ['1', '0'], 'label')
     # # df_user_item = df_user_item.fillna('0')
     df_user_item = df_user_item.withColumn('item_id',\
-                                           functions.concat(functions.lit('lzm-'), functions.col('object_type'),\
+                                           functions.concat(functions.lit('lzmp-'), functions.col('object_type'),\
                                                             functions.lit('-'), functions.col('object_id'))).select(\
         'item_id', 'label', 'rway')
     # #
@@ -152,7 +152,7 @@ if __name__ == '__main__':
     #
     # #4  存入hive redis
 
-    pool = redis.ConnectionPool(host="10.25.248.35", port="6379", db=4)
+    pool = redis.ConnectionPool(host="codis.rcmsys2.lq.autohome.com.cn", port="19099")
     conn = redis.Redis(connection_pool=pool, decode_responses=True)
     dict_heat_score = df_user_item_temp_count.rdd.collectAsMap()
 
