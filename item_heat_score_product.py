@@ -152,93 +152,48 @@ if __name__ == '__main__':
     #
     # #4  存入hive redis
 
-
-    # spark.sql("drop table if exists cmp_tmp.cmp_tmp_heat_score_lzm")
-    # df_user_item_temp_count.registerTempTable('test_hive')
-    # spark.sql("create table cmp_tmp.cmp_tmp_heat_score_lzm select * from test_hive")
-    # #
-    # # # %%
-    # #
-    # #
-    # #
-    # # # %%
-    # #
     pool = redis.ConnectionPool(host="codis.rcmsys2.lq.autohome.com.cn", port="19099")
     conn = redis.Redis(connection_pool=pool, decode_responses=True)
     dict_heat_score = df_user_item_temp_count.rdd.collectAsMap()
-    # #
-    # # # %%
-    # #
 
-    # #
-    # # # %%
-    # #
+    cnt = 0
+    total_num = len(dict_heat_score)
+    batch_size = total_num // 1000
 
-    # #
-    # # # %%
-    # #
     with conn.pipeline(transaction=False) as p:
         for key in dict_heat_score:
-            p.set(key, dict_heat_score[key], 90000)  # 6000代表6000秒，可以自己设置
-        p.execute()
-    #
-
-
-    # spark.sql("drop table if exists cmp_tmp.cmp_tmp_heat_score_lzm")
-    # df_gdm_item.registerTempTable('test_hive')
-    # spark.sql("create table cmp_tmp.cmp_tmp_heat_score_lzm select * from test_hive")
-    # # #
-    # # # # %%
-    # # #
-    # # #
-    # # #
-    # # # # %%
-    # # #
-    # pool = redis.ConnectionPool(host="10.25.248.35", port="6379", db=2)
+            p.set(key, dict_heat_score[key], 36000)  # 6000代表6000秒，可以自己设置
+            cnt = cnt + 1
+            if cnt == total_num or cnt % batch_size == 0:
+                p.execute()
+    # #
+    # # # %%
+    # #
+    # #
+    # #
+    # # # %%
+    # #
+    # pool = redis.ConnectionPool(host="codis.rcmsys2.lq.autohome.com.cn", port="19099")
     # conn = redis.Redis(connection_pool=pool, decode_responses=True)
-    # dict_heat_score = df_gdm_item.rdd.collectAsMap()
-    # # #
-    # # # # %%
-    # # #
-    #
-    # # #
-    # # # # %%
-    # # #
-    #
-    # # #
-    # # # # %%
-    # # #
-    # with conn.pipeline(transaction=False) as p:
-    #     for key in dict_heat_score:
-    #         p.set(key, dict_heat_score[key], 12000)  # 6000代表6000秒，可以自己设置
-    #     p.execute()
-    #     df_user_item_final = df_user_item_final
-    # df_user_item_temp_count = df_user_item_temp_count.withColumn("features", \
-    #                                                              functions.concat(functions.col('count'), \
-    #                                                                               functions.lit(','), \
-    #                                                                               functions.col('click_num'), \
-    #                                                                               functions.lit(','), \
-    #                                                                               functions.col('age_count'), \
-    #                                                                               functions.lit(','), \
-    #                                                                               functions.col('age_click_num'), \
-    #                                                                               functions.lit(','), \
-    #                                                                               functions.col('product'))).select(\
-    #     'item_id', 'count')
-
-    # df_user_item_final_tmp = df_user_item_final_tmp.
-
-    # spark.sql("drop table if exists cmp_tmp.cmp_tmp_heat_score_product_lzm")
-    # df_user_item_temp_count.registerTempTable('test_hive')
-    # spark.sql("create table cmp_tmp.cmp_tmp_heat_score_product_lzm select * from test_hive")
-    # df_user_item_temp_count = df_user_item_temp_count.withColumn('count', df_user_item_temp_count['count'].cast('double')).select(\
-    #     'item_id', 'count')
     # dict_heat_score = df_user_item_temp_count.rdd.collectAsMap()
-    # pool = redis.ConnectionPool(host="10.25.248.35", port="6379", db=3)
-    # conn = redis.Redis(connection_pool=pool, decode_responses=True)
+    # # #
+    # # # # %%
+    # # #
     #
+    # # #
+    # # # # %%
+    # # #
+    #
+    # # #
+    # # # # %%
+    # # #
     # with conn.pipeline(transaction=False) as p:
     #     for key in dict_heat_score:
-    #         p.set(key, dict_heat_score[key], 6000)  # 6000代表6000秒，可以自己设置
+    #         p.set(key, dict_heat_score[key], 90000)  # 6000代表6000秒，可以自己设置
     #     p.execute()
+    #
+
+
+
 
     spark.stop()
